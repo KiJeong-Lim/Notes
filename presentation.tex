@@ -71,11 +71,11 @@
                 \item $t$ \texttt{::=} $x$: 변수은 항입니다.
                 \item $t$ \texttt{::=} $c$: 상수는 항입니다.
                 \item $t$ \texttt{::=} ($t$ $t$): 적용은 항입니다.
-                \item $t$ \texttt{::=} ($x$\texttt{\string\ }$t$): $\lambda$-추상은 항입니다.
+                \item $t$ \texttt{::=} ($x$\texttt{\string\ }$t$): $\lambda$-식은 항입니다.
             \end{enumerate}
             \item 원자 논리식 $A$: 타입이 $o$인 항입니다.
             \begin{enumerate}
-                \item 술어: 원자 논리식 $A$의 HNF는 $\left( \left( \left( p \, t_1 \right) \, \cdots \, \right) \, t_n \right)$ 꼴인데, 여기서 $p$를 $A$의 술어라고 합니다. 단, $n \geq 0$.
+                \item 술어: 원자 논리식 $A$의 HNF는 $ p \, t_1 \, \cdots \, t_n $ 꼴인데, 여기서 $p$를 $A$의 술어라고 합니다. 단, $n \geq 0$.
                 \item 엄격한 원자 논리식 $A_r$: 술어가 상수인 원자 논리식입니다.
             \end{enumerate}
         \end{itemize}
@@ -85,15 +85,13 @@
         \frametitle{$\lambda$Prolog의 구문론}
         \begin{itemize}
             \item 질의 $G$:
-            \begin{enumerate}
-                \item $A$는 헤드가 $A$인 규칙에 의하여 증명되는 질의입니다.
-                \item \texttt{true}은 항상 증명되는 질의입니다.
-                \item $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
-                \item $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
-                \item $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
-                \item \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
-                \item \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
-            \end{enumerate}
+            \item $A$는 규칙에 의하여 증명되는 질의입니다.
+            \item \texttt{true}은 항상 증명되는 질의입니다.
+            \item $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
+            \item $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
+            \item $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
+            \item \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
+            \item \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
         \end{itemize}
     \end{frame}
 
@@ -101,10 +99,18 @@
         \frametitle{$\lambda$Prolog의 구문론}
         \begin{itemize}
             \item 규칙 $D$:
+            \item \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 머리가 $D_2$와 같은 규칙입니다.
+            \item $A_r$은 머리가 $A_r$인 규칙입니다.
+            \item $A_r$ \texttt{:-} $G$은 머리가 $A_r$인 규칙입니다.
+            \item 다음과 같이 원자논리식 $p \, t_1 \, \cdots \, t_n$이 증명됩니다:
             \begin{enumerate}
-                \item \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 헤드가 $D_2$와 같은 규칙으로서, 매칭을 시도할 때 새로운 논리변수 $X$에 대하여 $D_2 \left[ x_1 := X \right]$로 인스턴스화 됩니다.
-                \item $A_r$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 그 질의가 증명됩니다.
-                \item $A_r$ \texttt{:-} $G$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 새로운 질의 $G$를 증명해야 기존의 질의가 증명됩니다.
+                \item 머리의 술어가 $p$인 규칙을 찾습니다.
+                \item $A_r$ 꼴의 규칙은 $A_r$ \texttt{:-} \texttt{true}로 볼 수 있으므로,
+                \item 찾아냈다면 그 규칙을 \texttt{pi} $\bar{x}$\texttt{\string\ }($A_r$ \texttt{:-} $G$)라고 하겠습니다.
+                \item 인터프리터는 새로운 논리변수 $\bar{X}$들을 도입한 뒤 $A_r \left[ \bar{x} := \bar{X} \right]$을 $p \, t_1 \, \cdots \, t_n$에 매칭시킵니다.
+                \item 성공할 경우 매칭에서 발생한 치환을 $\theta$라고 할 때, $\theta \left( G \left[ \bar{x} := \bar{X} \right] \right)$의 증명을 시도합니다.
+                \item 만약, 이 시도에서 실패하면, 매칭에 실패한 경우와 마찬가지로 다음 규칙을 찾습니다.
+                \item 그러나, 그 시도가 성공하면, $p \, t_1 \, \cdots \, t_n$이 증명된 것으로 봅니다.
             \end{enumerate}
         \end{itemize}
     \end{frame}
@@ -260,7 +266,7 @@
                 \item 기존의 \texttt{copy\_ty} 규칙에 의하여 $\tau$로 복사되어 $\sigma \left[ \alpha := c \right]$의 부분항이 되는 경우도 찾아내고,
                 \item $c$가 $\tau$의 복사본이라는 규칙에 의하여 $c$로 복사되어 $\sigma \left[ \alpha := c \right]$의 부분항이 되는 경우도 찾아냅니다.
             \end{enumerate}
-            \item $\sigma_1$의 나머지 부분은 \texttt{copy\_ty}에 의하여 $\sigma \left[ \alpha := c \right]$로 복사되므로, 인터프리터는 $\sigma_1 \equiv \sigma \left[ \alpha := \tau \right]$이게 하는 $\sigma$를 모두 찾아냅니다.
+            \item $\sigma_1$의 나머지 부분은 \texttt{copy\_ty}에 의하여 $\sigma \left[ \alpha := c \right]$로 복사되므로, 인터프리터는 $\sigma_1 \equiv \sigma \left[ \alpha := \tau \right]$인 $\sigma$를 모두 찾아냅니다.
             \item 그 다음 인터프리터는 이러한 $\sigma$들에 대하여 $M : \forall \alpha . \sigma$인지 조사하기 때문에, 네 번째 규칙은 우리가 알고 있는 \texttt{tapp}에 대한 규칙과 결국 같은 규칙임을 알 수 있습니다.
         \end{itemize}
     \end{frame}
@@ -291,13 +297,13 @@
 
     \begin{frame}
         \frametitle{실행}
-        \begin{enumerate}
+        \begin{itemize}
             \item 먼저, $$\vdash \left( \Lambda \alpha . \lambda x^{\alpha} . x \right) \left( \forall \beta . \beta \right) : \left( \forall \beta . \beta \right) \to \left( \forall \beta . \beta \right)$$인지 질문했는데,
             \item Teyjus V2는 \texttt{yes}라고 답했네요.
             \item 그 다음, $$\vdash \left( \Lambda \alpha . \lambda x^{\alpha} . x \right) \left( \forall \beta . \beta \right) : \left( \forall \beta . \beta \right) \to \left( \forall \beta . \beta \right) \to \left( \forall \beta . \beta \right)$$인지 질문했는데,
             \item Teyjus V2는 \texttt{no (more) solutions}라고 답했네요.
             \item 두 경우 모두 예상대로 작동하는 것을 알 수 있습니다.
-        \end{enumerate}
+        \end{itemize}
     \end{frame}
     
     \begin{frame}[c]
