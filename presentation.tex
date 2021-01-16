@@ -2,8 +2,6 @@
 
 \usepackage{kotex}
 \usepackage{graphicx}
-\usepackage{authblk}
-\usepackage{mdframed}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -12,8 +10,9 @@
 \usepackage{proof}
 \usepackage{hyperref}
 
-\author{ 임기정 }
 \title{$\lambda$Prolog로 나만의 타입체커 만들기}
+\author{전남대학교 기계공학부 임기정}
+\date{2021년 2월 20일}
 
 \hypersetup{ colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=cyan, }
 
@@ -32,7 +31,7 @@
 
 \begin{document}
     \begin{frame}
-        \titlepage
+        \maketitle
     \end{frame}
 
     \begin{frame}
@@ -68,7 +67,7 @@
             \item 상수 $c$: 하스켈과 반대로, 소문자로 시작하는 식별자입니다.
             \item 항 $t$:
             \begin{enumerate}
-                \item $t$ \texttt{::=} $x$: 변수은 항입니다.
+                \item $t$ \texttt{::=} $x$: 변수는 항입니다.
                 \item $t$ \texttt{::=} $c$: 상수는 항입니다.
                 \item $t$ \texttt{::=} ($t$ $t$): 적용은 항입니다.
                 \item $t$ \texttt{::=} ($x$\texttt{\string\ }$t$): $\lambda$-식은 항입니다.
@@ -85,13 +84,13 @@
         \frametitle{$\lambda$Prolog의 구문론}
         \begin{itemize}
             \item 질의 $G$:
-            \item $A$는 규칙에 의하여 증명되는 질의입니다.
-            \item \texttt{true}은 항상 증명되는 질의입니다.
-            \item $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
-            \item $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
-            \item $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
-            \item \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
-            \item \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
+            \item $G$ ::= $A$는 규칙에 의하여 증명되는 질의입니다.
+            \item $G$ ::= \texttt{true}은 항상 증명되는 질의입니다.
+            \item $G$ ::= $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
+            \item $G$ ::= $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
+            \item $G$ ::= $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
+            \item $G$ ::= \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
+            \item $G$ ::= \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
         \end{itemize}
     \end{frame}
 
@@ -99,9 +98,9 @@
         \frametitle{$\lambda$Prolog의 구문론}
         \begin{itemize}
             \item 규칙 $D$:
-            \item \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 머리가 $D_2$와 같은 규칙입니다.
-            \item $A_r$은 머리가 $A_r$인 규칙입니다.
-            \item $A_r$ \texttt{:-} $G$은 머리가 $A_r$인 규칙입니다.
+            \item $D$ ::= \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 머리가 $D_2$와 같은 규칙입니다.
+            \item $D$ ::= $A_r$은 머리가 $A_r$인 규칙입니다.
+            \item $D$ ::= $A_r$ \texttt{:-} $G$은 머리가 $A_r$인 규칙입니다.
             \item 다음과 같이 원자논리식 $p \, t_1 \, \cdots \, t_n$이 증명됩니다:
             \begin{enumerate}
                 \item 머리의 술어가 $p$인 규칙을 찾습니다.
@@ -110,7 +109,7 @@
                 \item 인터프리터는 새로운 논리변수 $\bar{X}$들을 도입한 뒤 $A_r \left[ \bar{x} := \bar{X} \right]$을 $p \, t_1 \, \cdots \, t_n$에 매칭시킵니다.
                 \item 성공할 경우 매칭에서 발생한 치환을 $\theta$라고 할 때, $\theta \left( G \left[ \bar{x} := \bar{X} \right] \right)$의 증명을 시도합니다.
                 \item 만약, 이 시도에서 실패하면, 매칭에 실패한 경우와 마찬가지로 다음 규칙을 찾습니다.
-                \item 그러나, 그 시도가 성공하면, $p \, t_1 \, \cdots \, t_n$이 증명된 것으로 봅니다.
+                \item 그러나, 그 시도가 성공하면, $p \, t_1 \, \cdots \, t_n$이 증명된 것입니다.
             \end{enumerate}
         \end{itemize}
     \end{frame}
