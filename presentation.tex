@@ -86,13 +86,13 @@
         \begin{itemize}
             \item 질의 $G$:
             \begin{enumerate}
-                \item $G$ \texttt{::=} $A$는 헤드가 $A$인 규칙에 의하여 증명되는 질의입니다.
-                \item $G$ \texttt{::=} \texttt{true}은 $\top$은 항상 증명되는 질의입니다.
-                \item $G$ \texttt{::=} $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
-                \item $G$ \texttt{::=} $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
-                \item $G$ \texttt{::=} $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
-                \item $G$ \texttt{::=} \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
-                \item $G$ \texttt{::=} \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
+                \item $A$는 헤드가 $A$인 규칙에 의하여 증명되는 질의입니다.
+                \item \texttt{true}은 항상 증명되는 질의입니다.
+                \item $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
+                \item $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
+                \item $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
+                \item \texttt{pi} $x_1$\texttt{\string\ }$G_2$은 새로운 상수 기호 $c$을 도입하여 $G_2 \left[ x_1 := c \right]$을 증명해야 증명되는 질의입니다.
+                \item \texttt{sigma} $x_1$\texttt{\string\ }$G_2$은 새로운 논리 변수 $X$를 도입하여 $G_2 \left[ x_1 := X \right]$를 증명해야 증명되는 질의입니다.
             \end{enumerate}
         \end{itemize}
     \end{frame}
@@ -102,9 +102,9 @@
         \begin{itemize}
             \item 규칙 $D$:
             \begin{enumerate}
-                \item $D$ \texttt{::=} \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 헤드가 $D_2$와 같은 규칙으로서, 매칭을 시도할 때 새로운 논리변수 $X$에 대하여 $D_2 \left[ x_1 := X \right]$로 인스턴스화 됩니다.
-                \item $D$ \texttt{::=} $A_r$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 그 질의가 증명됩니다.
-                \item $D$ \texttt{::=} $A_r$ \texttt{:-} $G$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 새로운 질의 $G$를 증명해야 기존의 질의가 증명됩니다.
+                \item \texttt{pi} $x_1$\texttt{\string\ }$D_2$는 헤드가 $D_2$와 같은 규칙으로서, 매칭을 시도할 때 새로운 논리변수 $X$에 대하여 $D_2 \left[ x_1 := X \right]$로 인스턴스화 됩니다.
+                \item $A_r$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 그 질의가 증명됩니다.
+                \item $A_r$ \texttt{:-} $G$은 헤드가 $A_r$인 규칙으로서, 매칭에 성공하면 새로운 질의 $G$를 증명해야 기존의 질의가 증명됩니다.
             \end{enumerate}
         \end{itemize}
     \end{frame}
@@ -183,8 +183,8 @@
                 \item $\sigma_1$이 $\sigma_2$의 복사본이면,
                 \item $\tau_1 \to \sigma_1$은 $\tau_2 \to \sigma_2$의 복사본이다.
             \end{enumerate}
-            \item 두 번째 규칙의 의미를 살펴봅시다:
             \pause
+            \item 두 번째 규칙의 의미를 살펴봅시다:
             \begin{enumerate}
                 \item 타입 \texttt{ty}의 새로운 상수 기호 $c$를 도입하고, $c$는 $c$의 복사본이라고 하자.
                 \item 이때, $\tau_1 \left[ \alpha := c \right]$가 $\tau_2 \left[ \alpha := c \right]$의 복사본이면,
@@ -220,7 +220,6 @@
                 \item $N : \tau$이면,
                 \item $M N : \sigma$이다.
             \end{enumerate}
-            \item 그저 당연한 소리일 뿐이네요.
         \end{itemize}
     \end{frame}
 
