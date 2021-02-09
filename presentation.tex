@@ -266,8 +266,9 @@
                 \item 기존의 \texttt{copy\_ty} 규칙에 의하여 $\tau$로 복사되어 $\sigma \left[ \alpha := c \right]$의 부분항이 되는 경우도 찾아내고,
                 \item $c$가 $\tau$의 복사본이라는 규칙에 의하여 $c$로 복사되어 $\sigma \left[ \alpha := c \right]$의 부분항이 되는 경우도 찾아냅니다.
             \end{enumerate}
-            \item $\sigma_1$의 나머지 부분은 \texttt{copy\_ty}에 의하여 $\sigma \left[ \alpha := c \right]$로 복사되므로, 인터프리터는 $\sigma_1 \equiv \sigma \left[ \alpha := \tau \right]$인 $\sigma$를 모두 찾아냅니다.
-            \item 그 다음 인터프리터는 이러한 $\sigma$들에 대하여 $M : \forall \alpha . \sigma$인지 조사하기 때문에, 네 번째 규칙은 우리가 알고 있는 \texttt{tapp}에 대한 규칙과 결국 같은 규칙임을 알 수 있습니다.
+            \item $\sigma_1$의 나머지 부분은 \texttt{copy\_ty}에 의하여 $\sigma \left[ \alpha := c \right]$로 복사되므로,
+            \item 인터프리터는 $\sigma_1 \equiv \sigma \left[ \alpha := \tau \right]$인 $\sigma$를 모두 찾아냅니다.
+            \item 그 다음 인터프리터는 이렇게 얻은 모든 $\sigma$들에 대하여 $M : \forall \alpha . \sigma$인지 조사하기 때문에, 네 번째 규칙은 우리가 알고 있는 \texttt{tapp}에 대한 규칙과 결국 같은 규칙임을 알 수 있습니다.
         \end{itemize}
     \end{frame}
 
