@@ -72,11 +72,9 @@
                 \item $t$ ::= ($t$ $t$) 적용은 항입니다.
                 \item $t$ ::= ($x$\texttt{\string\ }$t$) $\lambda$-식은 항입니다.
             \end{enumerate}
-            \item 원자 논리식 $A$: 타입이 \texttt{o}인 항입니다.
-            \begin{enumerate}
-                \item 술어: 원자 논리식 $A$의 HNF는 $ p \, t_1 \, \cdots \, t_n $ 꼴인데, 여기서 $p$를 $A$의 술어라고 합니다. 단, $n \geq 0$.
-                \item 엄격한 원자 논리식 $A_r$: 술어가 상수인 원자 논리식입니다.
-            \end{enumerate}
+            \item 술어 $p$: 타입 $ \tau_{1} \to \cdots \to \tau_{n} \to o $의 변수 또는 상수입니다 -- 단, $n \geq 0$이고 타입 $\tau_{1}$, ..., $\tau_{n}$에는 타입 생성자 $o$가 나타나지 않습니다 -- 이때 $p$를 $n$항 술어라고 합니다.
+            \item 원자논리식 $A$: $p \, t_{1} \, \cdots \, t_{n}$ 꼴의 항입니다 -- 여기서, $p$는 $n$항 술어입니다.
+            \item 엄격한 원자논리식 $A_r$: 술어가 상수인 원자논리식입니다.
         \end{itemize}
     \end{frame}
 
@@ -85,7 +83,7 @@
         \begin{itemize}
             \item 질의 $G$:
             \item $G$ ::= $A$는 규칙에 의하여 증명되는 질의입니다.
-            \item $G$ ::= \texttt{true}은 항상 증명되는 질의입니다.
+            \item $G$ ::= \texttt{true}은 바로 증명되는 질의입니다.
             \item $G$ ::= $G_1$\texttt{,} $G_2$은 $G_1$과 $G_2$ 모두를 증명해야 증명되는 질의입니다.
             \item $G$ ::= $G_1$\texttt{;} $G_2$은 $G_1$과 $G_2$ 중 하나만 증명해도 증명되는 질의입니다.
             \item $G$ ::= $D_1$ \texttt{=>} $G_2$은 $D_1$을 가정했을 때 $G_2$을 증명해야 증명되는 질의입니다.
@@ -98,19 +96,10 @@
         \frametitle{$\lambda$Prolog의 구문론}
         \begin{itemize}
             \item 규칙 $D$:
-            \item $D$ ::= \texttt{pi} ($x_1$\texttt{\string\ }$D_2$)는 머리가 $D_2$와 같은 규칙입니다.
-            \item $D$ ::= $A_r$은 머리가 $A_r$인 규칙입니다.
-            \item $D$ ::= $A_r$ \texttt{:-} $G$은 머리가 $A_r$인 규칙입니다.
-            \item 다음과 같이 원자논리식 $p \, t_1 \, \cdots \, t_n$이 증명됩니다:
-            \begin{enumerate}
-                \item 머리의 술어가 $p$인 규칙을 찾습니다.
-                \item $A_r$ 꼴의 규칙은 $A_r$ \texttt{:-} \texttt{true}로 볼 수 있으므로,
-                \item 찾아냈다면 그 규칙을 \texttt{pi} ($\bar{x}$\texttt{\string\ }($A_r$ \texttt{:-} $G$))라고 하겠습니다.
-                \item 인터프리터는 새로운 논리변수 $\bar{X}$들을 도입한 뒤 $A_r \left[ \bar{x} := \bar{X} \right]$을 $p \, t_1 \, \cdots \, t_n$에 매칭시킵니다.
-                \item 성공할 경우 매칭에서 발생한 치환을 $\theta$라고 할 때, $\theta \left( G \left[ \bar{x} := \bar{X} \right] \right)$의 증명을 시도합니다.
-                \item 만약, 이 시도에서 실패하면, 매칭에 실패한 경우와 마찬가지로 다음 규칙을 찾습니다.
-                \item 그러나, 그 시도가 성공하면, $p \, t_1 \, \cdots \, t_n$이 증명된 것입니다.
-            \end{enumerate}
+            \item $D$ ::= \texttt{pi} ($x_1$\texttt{\string\ }$D_2$)는 머리와 꼬리가 $D_2$와 같은 규칙입니다.
+            \item $D$ ::= $A_r$은 머리가 $A_r$이고 꼬리가 \texttt{true}인 규칙입니다.
+            \item $D$ ::= $A_r$ \texttt{:-} $G$은 머리가 $A_r$이고 꼬리가 $G$인 규칙입니다.
+            \item $\lambda$Prolog 인터프리터는 그것이 증명하고자 하는 원자논리식을 각 규칙들의 머리에 매칭하길 시도하고, 매칭에 성공한 규칙들의 꼬리의 증명을 시도합니다.
         \end{itemize}
     \end{frame}
 
